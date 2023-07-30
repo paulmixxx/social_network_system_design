@@ -1,0 +1,716 @@
+openapi: 3.0.3
+info:
+  title: REST API для социальной сети ВКонтакте
+  version: 1.0.0
+servers:
+  - url: https://vk.com/api/v1
+paths:
+  /friends:
+    get:
+      tags:
+        - Friends
+      summary: Просмотр друзей текущего пользователя
+      responses:
+        '200':
+          description: Список друзей
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - friends
+    post:
+      tags:
+        - Friends
+      summary: Добавление пользователя в друзья
+      requestBody:
+        $ref: '#/components/requestBodies/userId'
+      responses:
+        '200':
+          $ref: '#/components/responses/200SuccessResponse'
+        '400':
+          $ref: '#/components/responses/400ValidationErrorResponse'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - friends
+  /friends/{userId}:
+    get:
+      tags:
+        - Friends
+      summary: Просмотр друзей других пользователей
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: Список друзей
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/400ValidationErrorResponse'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - friends
+    delete:
+      tags:
+        - Friends
+      summary: Удаление пользователя из друзей
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          $ref: '#/components/responses/200SuccessResponse'
+        '400':
+          $ref: '#/components/responses/400ValidationErrorResponse'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+  /profile:
+    get:
+      tags:
+        - Profile
+      summary: Просмотр анкеты текущего пользователя
+      responses:
+        '200':
+          description: Профиль пользователя
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/User'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - profiles
+  /profile/{userId}:
+    get:
+      tags:
+        - Profile
+      summary: Просмотр анкеты других пользователей
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: Профиль пользователя
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/400ValidationErrorResponse'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - profiles
+  /posts:
+    get:
+      tags:
+        - Posts
+      summary: Просмотр ленты постов текущего пользователя
+      responses:
+        '200':
+          description: Список постов
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - posts
+    post:
+      tags:
+        - Posts
+      summary: Публикация поста в ленту текущего пользователя
+      responses:
+        '200':
+          description: Пост
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/400ValidationErrorResponse'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenErrorResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - posts
+  /posts/{userId}:
+    get:
+      tags:
+        - Posts
+      summary: Просмотр ленты постов других пользователей
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: Пост пользователя
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/400ValidationErrorResponse'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenErrorResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - posts
+    post:
+      tags:
+        - Posts
+      summary: Публикация поста в ленту других пользователей
+      parameters:
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: Пост пользователя
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/400ValidationErrorResponse'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenErrorResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - posts
+  /posts/{postId}/attachments:
+    post:
+      tags:
+        - Posts
+      summary: Загрузка медиа файлов для постов
+      parameters:
+        - $ref: '#/components/parameters/postId'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                images:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                audios:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                videos:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                documents:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: Пост
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          $ref: '#/components/responses/400ValidationErrorResponse'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '403':
+          $ref: '#/components/responses/403ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - posts
+  /conversations:
+    get:
+      tags:
+        - Conversations
+      summary: Просмотр диалогов и чатов пользователя
+      responses:
+        '200':
+          description: Список диалогов и чатов пользователя
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Conversation'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - conversations
+  /conversations/{conversationId}:
+    get:
+      tags:
+        - Conversations
+      summary: Чтение сообщений в диалогах и чатах
+      parameters:
+        - $ref: '#/components/parameters/conversationId'
+      responses:
+        '200':
+          description: Список сообщений в диалогах и чатах
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Message'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - conversations
+    post:
+      tags:
+        - Conversations
+      summary: Отправка сообщений в диалогах и чатах
+      parameters:
+        - $ref: '#/components/parameters/conversationId'
+      responses:
+        '200':
+          description: Сообщение
+          content:
+            application/json:
+              schema:
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  data:
+                    $ref: '#/components/schemas/Conversation'
+        '401':
+          $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '500':
+          $ref: '#/components/responses/500ServerErrorResponse'
+      security:
+        - oAuthSample:
+            - conversations
+
+components:
+  schemas:
+    User:
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        firstName:
+          type: string
+          description: имя
+          example: John
+        lastName:
+          type: string
+          description: фамилия
+          example: Doe
+        birthdate:
+          type: string
+          description: дата рождения
+          example: 1990-01-01
+        sex:
+          type: string
+          description: пол (male - мужчина, female - женщина)
+          example: male
+        city:
+          type: integer
+          description: город
+          example: 1
+        registrationTime:
+          type: string
+          description: время регистрации (ISO8601)
+          example: 2005-08-15T15:52:01+0000
+    Post:
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        text:
+          type: string
+          example: lorem ipsum...
+        attachments:
+          description: прикрепленные файлы
+          properties:
+            images:
+              type: array
+              items:
+                $ref: '#/components/schemas/AttachmentImage'
+            audios:
+              type: array
+              items:
+                $ref: '#/components/schemas/AttachmentAudio'
+            videos:
+              type: array
+              items:
+                $ref: '#/components/schemas/AttachmentVideo'
+            documents:
+              type: array
+              items:
+                $ref: '#/components/schemas/AttachmentDocument'
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+    Conversation:
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        lastMessage:
+          $ref: '#/components/schemas/Message'
+        participants:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: integer
+                minimum: 1
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+    Message:
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        text:
+          type: string
+          example: lorem ipsum...
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+    Image:
+      properties:
+        url:
+          example: 'https://static.vk.com/image.jpg'
+        size:
+          description: размер в байтах
+          example: 1024
+    CreatedAt:
+      type: string
+      description: время создания (ISO8601)
+      example: 2005-08-15T15:52:01+0000
+    UpdatedAt:
+      type: string
+      description: время обновления (ISO8601)
+      example: 2005-08-15T15:52:01+0000
+    AttachmentImage:
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          description: название
+        thumbnails:
+          properties:
+            small:
+              $ref: '#/components/schemas/Image'
+            medium:
+              $ref: '#/components/schemas/Image'
+            large:
+              $ref: '#/components/schemas/Image'
+        original:
+          $ref: '#/components/schemas/Image'
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+    AttachmentAudio:
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          description: название
+        url:
+          example: 'https://static.vk.com/audio.mp3'
+        size:
+          description: размер в байтах
+          example: 1024
+        length:
+          description: длительность в секундах
+          example: 300
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+    AttachmentVideo:
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          description: название
+        url:
+          example: 'https://static.vk.com/video.mp4'
+        size:
+          description: размер в байтах
+          example: 1024
+        length:
+          description: длительность в секундах
+          example: 300
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+    AttachmentDocument:
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+          description: название
+        url:
+          example: 'https://static.vk.com/docs.zip'
+        size:
+          description: размер в байтах
+          example: 1024
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+
+  parameters:
+    userId:
+      name: userId
+      in: path
+      description: Id пользователя
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    postId:
+      name: postId
+      in: path
+      description: Id поста
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    conversationId:
+      name: conversationId
+      in: path
+      description: Id диалога или чата
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+
+  requestBodies:
+    userId:
+      content:
+        application/json:
+          schema:
+            properties:
+              userId:
+                type: integer
+                minimum: 1
+
+  responses:
+    200SuccessResponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            properties:
+              status:
+                type: string
+                default: ok
+              data:
+                example: null
+    400ValidationErrorResponse:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            properties:
+              status:
+                type: string
+                default: error
+              message:
+                type: string
+                default: Validation error
+              errors:
+                type: object
+                example:
+                  - field: ['Error 1', 'Error 2']
+    401UnauthorizedErrorResponse:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            properties:
+              status:
+                type: string
+                default: error
+              message:
+                type: string
+                default: Unauthorized
+    403ForbiddenErrorResponse:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            properties:
+              status:
+                type: string
+                default: error
+              message:
+                type: string
+                default: Forbidden
+    404NotFoundResponse:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            properties:
+              status:
+                type: string
+                default: error
+              message:
+                type: string
+                default: Not found
+    500ServerErrorResponse:
+      description: Internal error
+      content:
+        application/json:
+          schema:
+            properties:
+              status:
+                type: string
+                default: error
+              message:
+                type: string
+                default: Internal error
+
+  securitySchemes:
+    oAuthSample:
+      type: oauth2
+      description: This API uses OAuth 2 with the implicit grant flow.
+      flows:
+        implicit:
+          authorizationUrl: https://oauth.vk.com/oauth2/authorize
+          scopes:
+            profiles: profiles
+            friends: friends
+            posts: posts
+            conversations: conversations
