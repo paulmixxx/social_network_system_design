@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: REST API для социальной сети ВКонтакте
+  title: REST API for social networks VK
   version: 1.0.0
 servers:
   - url: https://vk.com/api/v1
@@ -9,10 +9,10 @@ paths:
     get:
       tags:
         - Friends
-      summary: Просмотр друзей текущего пользователя
+      summary: View current user's friends
       responses:
         '200':
-          description: Список друзей
+          description: Friend list
           content:
             application/json:
               schema:
@@ -34,7 +34,7 @@ paths:
     post:
       tags:
         - Friends
-      summary: Добавление пользователя в друзья
+      summary: Adding a user as a friend
       requestBody:
         $ref: '#/components/requestBodies/userId'
       responses:
@@ -57,12 +57,12 @@ paths:
     get:
       tags:
         - Friends
-      summary: Просмотр друзей других пользователей
+      summary: View friends of other users
       parameters:
         - $ref: '#/components/parameters/userId'
       responses:
         '200':
-          description: Список друзей
+          description: Friend list
           content:
             application/json:
               schema:
@@ -90,14 +90,12 @@ paths:
     delete:
       tags:
         - Friends
-      summary: Удаление пользователя из друзей
+      summary: Removing a user from friends
       parameters:
         - $ref: '#/components/parameters/userId'
       responses:
         '200':
           $ref: '#/components/responses/200SuccessResponse'
-        '400':
-          $ref: '#/components/responses/400ValidationErrorResponse'
         '401':
           $ref: '#/components/responses/401UnauthorizedErrorResponse'
         '403':
@@ -110,10 +108,10 @@ paths:
     get:
       tags:
         - Profile
-      summary: Просмотр анкеты текущего пользователя
+      summary: Viewing the profile of the current user
       responses:
         '200':
-          description: Профиль пользователя
+          description: Viewing the profile of the current user
           content:
             application/json:
               schema:
@@ -134,12 +132,12 @@ paths:
     get:
       tags:
         - Profile
-      summary: Просмотр анкеты других пользователей
+      summary: View profile of other users
       parameters:
         - $ref: '#/components/parameters/userId'
       responses:
         '200':
-          description: Профиль пользователя
+          description: User profile
           content:
             application/json:
               schema:
@@ -166,10 +164,10 @@ paths:
     get:
       tags:
         - Posts
-      summary: Просмотр ленты постов текущего пользователя
+      summary: View the feed of the current user's posts
       responses:
         '200':
-          description: Список постов
+          description: List of posts
           content:
             application/json:
               schema:
@@ -191,10 +189,10 @@ paths:
     post:
       tags:
         - Posts
-      summary: Публикация поста в ленту текущего пользователя
+      summary: Publishing a post to the current user's feed
       responses:
         '200':
-          description: Пост
+          description: Post
           content:
             application/json:
               schema:
@@ -219,12 +217,12 @@ paths:
     get:
       tags:
         - Posts
-      summary: Просмотр ленты постов других пользователей
+      summary: View the feed of other users' posts
       parameters:
         - $ref: '#/components/parameters/userId'
       responses:
         '200':
-          description: Пост пользователя
+          description: User Post
           content:
             application/json:
               schema:
@@ -242,6 +240,8 @@ paths:
           $ref: '#/components/responses/401UnauthorizedErrorResponse'
         '403':
           $ref: '#/components/responses/403ForbiddenErrorResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
         '500':
           $ref: '#/components/responses/500ServerErrorResponse'
       security:
@@ -250,12 +250,12 @@ paths:
     post:
       tags:
         - Posts
-      summary: Публикация поста в ленту других пользователей
+      summary: Publishing a post to the feed of other users
       parameters:
         - $ref: '#/components/parameters/userId'
       responses:
         '200':
-          description: Пост пользователя
+          description: User Post
           content:
             application/json:
               schema:
@@ -280,7 +280,7 @@ paths:
     post:
       tags:
         - Posts
-      summary: Загрузка медиа файлов для постов
+      summary: Uploading media files for posts
       parameters:
         - $ref: '#/components/parameters/postId'
       requestBody:
@@ -311,7 +311,7 @@ paths:
                     format: binary
       responses:
         '200':
-          description: Пост
+          description: Post
           content:
             application/json:
               schema:
@@ -333,10 +333,10 @@ paths:
     get:
       tags:
         - Conversations
-      summary: Просмотр диалогов и чатов пользователя
+      summary: View user dialogs and chats
       responses:
         '200':
-          description: Список диалогов и чатов пользователя
+          description: List of user dialogs and chats
           content:
             application/json:
               schema:
@@ -359,12 +359,12 @@ paths:
     get:
       tags:
         - Conversations
-      summary: Чтение сообщений в диалогах и чатах
+      summary: Reading messages in dialogs and chats
       parameters:
         - $ref: '#/components/parameters/conversationId'
       responses:
         '200':
-          description: Список сообщений в диалогах и чатах
+          description: List of messages in dialogs and chats
           content:
             application/json:
               schema:
@@ -378,6 +378,8 @@ paths:
                       $ref: '#/components/schemas/Message'
         '401':
           $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
         '500':
           $ref: '#/components/responses/500ServerErrorResponse'
       security:
@@ -386,12 +388,12 @@ paths:
     post:
       tags:
         - Conversations
-      summary: Отправка сообщений в диалогах и чатах
+      summary: Sending messages in dialogs and chats
       parameters:
         - $ref: '#/components/parameters/conversationId'
       responses:
         '200':
-          description: Сообщение
+          description: Message
           content:
             application/json:
               schema:
@@ -403,6 +405,8 @@ paths:
                     $ref: '#/components/schemas/Conversation'
         '401':
           $ref: '#/components/responses/401UnauthorizedErrorResponse'
+        '404':
+          $ref: '#/components/responses/404NotFoundResponse'
         '500':
           $ref: '#/components/responses/500ServerErrorResponse'
       security:
@@ -418,27 +422,24 @@ components:
           minimum: 1
         firstName:
           type: string
-          description: имя
           example: John
         lastName:
           type: string
-          description: фамилия
           example: Doe
         birthdate:
           type: string
-          description: дата рождения
           example: 1990-01-01
         sex:
           type: string
-          description: пол (male - мужчина, female - женщина)
+          description: (male, female)
           example: male
+          enum: [male, female]
         city:
           type: integer
-          description: город
           example: 1
         registrationTime:
           type: string
-          description: время регистрации (ISO8601)
+          description: (ISO8601)
           example: 2005-08-15T15:52:01+0000
     Post:
       properties:
@@ -449,7 +450,6 @@ components:
           type: string
           example: lorem ipsum...
         attachments:
-          description: прикрепленные файлы
           properties:
             images:
               type: array
@@ -507,15 +507,15 @@ components:
         url:
           example: 'https://static.vk.com/image.jpg'
         size:
-          description: размер в байтах
+          description: size in bytes
           example: 1024
     CreatedAt:
       type: string
-      description: время создания (ISO8601)
+      description: (ISO8601)
       example: 2005-08-15T15:52:01+0000
     UpdatedAt:
       type: string
-      description: время обновления (ISO8601)
+      description: (ISO8601)
       example: 2005-08-15T15:52:01+0000
     AttachmentImage:
       properties:
@@ -524,7 +524,6 @@ components:
           minimum: 1
         name:
           type: string
-          description: название
         thumbnails:
           properties:
             small:
@@ -544,14 +543,13 @@ components:
           minimum: 1
         name:
           type: string
-          description: название
         url:
           example: 'https://static.vk.com/audio.mp3'
         size:
-          description: размер в байтах
+          description: size in bytes
           example: 1024
         length:
-          description: длительность в секундах
+          description: length in seconds
           example: 300
         createdAt:
           $ref: '#/components/schemas/CreatedAt'
@@ -562,14 +560,13 @@ components:
           minimum: 1
         name:
           type: string
-          description: название
         url:
           example: 'https://static.vk.com/video.mp4'
         size:
-          description: размер в байтах
+          description: size in bytes
           example: 1024
         length:
-          description: длительность в секундах
+          description: length in seconds
           example: 300
         createdAt:
           $ref: '#/components/schemas/CreatedAt'
@@ -580,11 +577,10 @@ components:
           minimum: 1
         name:
           type: string
-          description: название
         url:
           example: 'https://static.vk.com/docs.zip'
         size:
-          description: размер в байтах
+          description: size in bytes
           example: 1024
         createdAt:
           $ref: '#/components/schemas/CreatedAt'
@@ -593,7 +589,6 @@ components:
     userId:
       name: userId
       in: path
-      description: Id пользователя
       required: true
       schema:
         type: integer
@@ -601,7 +596,6 @@ components:
     postId:
       name: postId
       in: path
-      description: Id поста
       required: true
       schema:
         type: integer
@@ -609,7 +603,6 @@ components:
     conversationId:
       name: conversationId
       in: path
-      description: Id диалога или чата
       required: true
       schema:
         type: integer
